@@ -14,6 +14,7 @@ public:
     void write_crlf(); // write "\r\n"
 
     virtual void flush() = 0;
+    virtual void checkBuffer() = 0;
 
 protected:
     std::vector<char> buffer_;
@@ -27,4 +28,6 @@ public:
     std::string result;
 
     virtual void flush() override;
+
+    virtual void checkBuffer() override ;
 };
