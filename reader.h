@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
-#include "redis.h"
 
 class Reader {
 public:
@@ -17,14 +16,9 @@ public:
 
     int64_t read_int(); // read integer and skip "\r\n"
 
-    RedisError read_error();
-
-    int64_t read_first_int();
-
 protected:
     std::vector<char> buffer_;
     size_t end_ = 0, rpos_ = 0;
-
     virtual void read_more() = 0;
 
 };

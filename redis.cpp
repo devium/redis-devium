@@ -21,12 +21,12 @@ void ReadRedisValue(Reader* r, RedisValue* value) {
             break;
         }
         case '-': {
-            *value = r->read_error();
+            *value = RedisError(r->read_line());
             break;
         }
         case '$': {
-            int64_t string_size = r->read_first_int();
-            if (string_size == NULL) {
+            int64_t string_size = r->read_int();
+            if (string_size < 0) {
                 *value = RedisNull();
             } else {
                 *value = r->read_raw(string_size);
@@ -34,8 +34,9 @@ void ReadRedisValue(Reader* r, RedisValue* value) {
             break;
         }
         case '*': {
-            int64_t string_size = r->read_first_int();
-            if (string_size == NULL) {
+            //todo Set recursion limit to 8 Mb
+            int64_t string_size = r->read_int();
+            if (string_size  < 0) {
                 *value = RedisNull();
             } else {
                 *value = std::vector<RedisValue>(string_size);

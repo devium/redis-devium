@@ -1,5 +1,4 @@
 #include "reader.h"
-#include "redis.h"
 
 
 char Reader::read_char() {
@@ -27,21 +26,19 @@ int64_t Reader::read_int() {
 }
 
 std::string Reader::read_line() {
+    //todo Limit size of string (1 Mb)
     std::string str;
     char next = read_char();
     do {
-        str.append(next);
+        str.append(&next);
         next = read_char();
     } while (next != '\r');
     read_char();
     return str;
 }
 
-RedisError Reader::read_error() {
-    return RedisError(read_line());
-}
-
 std::string Reader::read_raw(size_t len) {
+    //todo Limit len (1 << 15)
     std::string bulk_string;
     bulk_string.resize(len);
     for (size_t i = 0; i < len; ++i) {
@@ -51,13 +48,6 @@ std::string Reader::read_raw(size_t len) {
     return bulk_string;
 }
 
-
-int64_t Reader::read_first_int() {
-    int64_t next = read_int();
-    if (next < 0) return NULL;
-    return next;
-}
-
 void StringReader::read_more() {
     if (input.empty()) throw std::runtime_error("end of input");
     end_ = 0;
@@ -65,6 +55,5 @@ void StringReader::read_more() {
     for (; end_ < input.size() && end_ < buffer_.size(); ++end_) {
         buffer_[end_] = input[end_];
     }
-
     input.erase(input.begin(), input.begin() + end_);
 }
