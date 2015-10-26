@@ -45,6 +45,7 @@ std::string Reader::read_raw(size_t len) {
         bulk_string[i] = read_char();
     }
     read_char();
+    read_char();
     return bulk_string;
 }
 
