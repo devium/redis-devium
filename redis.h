@@ -17,6 +17,12 @@ struct RedisError {
 
 struct RedisNull {};
 
+struct RedisBulkString {
+    explicit RedisBulkString(const std::string& str) : container(str) {}
+
+    std::string container;
+};
+
 typedef boost::make_recursive_variant<
     RedisNull,
     int64_t,
