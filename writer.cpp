@@ -20,9 +20,7 @@ void Writer::write_char(char c) {
     checkBuffer();
 }
 
-void Writer::write_string(const std::string &s) {
-    buffer_[wpos_++] = '+';
-    checkBuffer();
+void Writer::write_string(const std::string& s) {
     bool prev_is_cr = false;
     for (size_t i = 0; i < s.size(); ) {
         while (
