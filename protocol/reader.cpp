@@ -1,6 +1,5 @@
 #include "reader.h"
 
-
 char Reader::read_char() {
     if (rpos_ == end_) read_more();
     return buffer_[rpos_++];
