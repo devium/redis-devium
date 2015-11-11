@@ -24,12 +24,12 @@ struct RedisBulkString {
 };
 
 typedef boost::make_recursive_variant<
-    RedisNull,
-    int64_t,
-    std::string,
-    std::vector<char>,
-    RedisError,
-    std::vector<boost::recursive_variant_>
+          RedisNull
+        , int64_t
+        , std::string
+        , RedisBulkString
+        , RedisError
+        , std::vector<boost::recursive_variant_>
 >::type RedisValue;
 
 enum RedisType {
