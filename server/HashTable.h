@@ -3,8 +3,7 @@
 #include <unordered_map>
 #include <protocol/redis.h>
 
-
-typedef std::unordered_map<RedisValue> redisHashTable;
+typedef std::unordered_map<std::string, RedisValue> redisHashTable;
 
 class HashTable {
 private:
