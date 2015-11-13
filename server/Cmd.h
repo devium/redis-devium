@@ -2,6 +2,7 @@
 
 #include <iosfwd>
 #include <protocol/redis.h>
+#include "HashTable.h"
 
 class Cmd {
 public:

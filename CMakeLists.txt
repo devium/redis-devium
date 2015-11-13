@@ -13,6 +13,8 @@ add_library(redis
         server/Socket.cpp
         server/Cmd.cpp
         server/HashTable.cpp
+        server/Setter.cpp
+        server/Getter.cpp
 )
 
 add_executable(redis-server
