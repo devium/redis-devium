@@ -12,6 +12,7 @@ add_library(redis
         server/Listener.cpp
         server/Socket.cpp
         server/Cmd.cpp
+        server/HashTable.cpp
 )
 
 add_executable(redis-server
