@@ -15,6 +15,7 @@ add_library(redis
         server/HashTable.cpp
         server/Setter.cpp
         server/Getter.cpp
+        server/Server.cpp
 )
 
 add_executable(redis-server
