@@ -5,29 +5,40 @@
 
 class Writer {
 public:
-    explicit Writer(size_t buffer_size) : buffer_(buffer_size) {}
 
-    void write_string(const std::string& s);
-    void write_raw(const char* s, size_t len);
-    void write_int(int64_t i);
-    void write_char(char c);
-    void write_crlf(); // write "\r\n"
+    explicit Writer(size_t bufferSize) : buffer_(bufferSize) {}
+
+    void writeString(const std::string &s);
+
+    void writeRaw(const char *s, size_t len);
+
+    void writeInt(int64_t i);
+
+    void writeChar(char c);
+
+    void writeCrlf();
 
     virtual void flush() = 0;
+
     virtual void checkBuffer() = 0;
 
 protected:
+
     std::vector<char> buffer_;
+
     int wpos_ = 0;
+
 };
 
 class StringWriter : public Writer {
 public:
-    explicit StringWriter(size_t buffer_size = 1024) : Writer(buffer_size) {}
+
+    explicit StringWriter(size_t bufferSize = 1024) : Writer(bufferSize) {}
 
     std::string result;
 
     virtual void flush() override;
 
-    virtual void checkBuffer() override ;
+    virtual void checkBuffer() override;
+
 };

@@ -8,7 +8,7 @@ typedef std::unordered_map<std::string, RedisValue> redisHashTable;
 class HashTable {
 private:
 
-    redisHashTable table;
+    redisHashTable table_;
 
 public:
 

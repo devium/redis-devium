@@ -6,7 +6,7 @@
 class Listener {
 private:
 
-    int socketDescriptor;
+    int socketDescriptor_;
 
 public:
 

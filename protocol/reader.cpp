@@ -1,54 +1,54 @@
 #include "reader.h"
 
-char Reader::read_char() {
-    if (rpos_ == end_) read_more();
+char Reader::readChar() {
+    if (rpos_ == end_) readMore();
     return buffer_[rpos_++];
 }
 
-int64_t Reader::read_int() {
+int64_t Reader::readInt() {
     int64_t i = 0;
     bool negative = false;
-    char first = read_char(), next;
+    char first = readChar(), next;
     if (first == '-') {
         negative = true;
-        next = read_char();
+        next = readChar();
     } else {
         next = first;
     }
     do {
         i *= 10;
         i += next - '0';
-        next = read_char();
+        next = readChar();
     } while (next != '\r');
-    read_char(); // skip '\n'
+    readChar(); // skip '\n'
     return negative ? -i : i;
 }
 
-std::string Reader::read_line() {
+std::string Reader::readLine() {
     //todo Limit size of string (1 Mb)
     std::string str;
-    char next = read_char();
+    char next = readChar();
     do {
         str.append(&next);
-        next = read_char();
+        next = readChar();
     } while (next != '\r');
-    read_char();
+    readChar();
     return str;
 }
 
-std::string Reader::read_raw(size_t len) {
+std::string Reader::readRaw(size_t len) {
     //todo Limit len (1 << 15)
     std::string bulk_string;
     bulk_string.resize(len);
     for (size_t i = 0; i < len; ++i) {
-        bulk_string[i] = read_char();
+        bulk_string[i] = readChar();
     }
-    read_char();
-    read_char();
+    readChar();
+    readChar();
     return bulk_string;
 }
 
-void StringReader::read_more() {
+void StringReader::readMore() {
     if (input.empty()) throw std::runtime_error("end of input");
     end_ = 0;
     rpos_ = 0;

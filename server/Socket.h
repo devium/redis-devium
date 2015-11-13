@@ -3,7 +3,7 @@
 class Socket {
 private:
 
-    int socketDescriptor;
+    int socketDescriptor_;
 
 public:
 

@@ -5,7 +5,7 @@
 class Getter : public Cmd {
 private:
 
-    const std::string commandName = "GET";
+    const std::string commandName_ = "GET";
 
 public:
 
