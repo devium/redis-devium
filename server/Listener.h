@@ -4,6 +4,11 @@
 #include "Socket.h"
 
 class Listener {
+private:
+
+    int socketDescriptor;
+
+public:
 
     Listener(int port);
 
