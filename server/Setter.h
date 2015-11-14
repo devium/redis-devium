@@ -5,7 +5,7 @@
 class Setter : public Cmd {
 private:
 
-    const std::string commandName_ = "SET";
+    const std::string COMMAND_NAME_ = "SET";
 
 public:
 
