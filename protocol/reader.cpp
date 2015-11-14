@@ -25,11 +25,11 @@ int64_t Reader::readInt() {
 }
 
 std::string Reader::readLine() {
-    //todo Limit size of string (1 Mb)
     std::string str;
     char next = readChar();
     do {
         str.append(&next);
+        if (str.size() >= MAX_STRING_SIZE_) throw std::runtime_error("Exceeded maximum string size");
         next = readChar();
     } while (next != '\r');
     readChar();
@@ -37,7 +37,7 @@ std::string Reader::readLine() {
 }
 
 std::string Reader::readRaw(size_t len) {
-    //todo Limit len (1 << 15)
+    if (len > MAX_STRING_LEN_) throw std::runtime_error("Invalid string length");
     std::string bulk_string;
     bulk_string.resize(len);
     for (size_t i = 0; i < len; ++i) {

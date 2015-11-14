@@ -19,6 +19,10 @@ public:
 
 protected:
 
+    const size_t MAX_STRING_SIZE_ = 1024 * 1024;
+
+    const size_t MAX_STRING_LEN_ = 1 << 15;
+
     std::vector<char> buffer_;
 
     size_t end_ = 0, rpos_ = 0;
