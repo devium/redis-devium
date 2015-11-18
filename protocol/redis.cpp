@@ -1,36 +1,35 @@
 #include "redis.h"
 
 void WriteRedisValue(Writer* w, const RedisValue& value) {
-    // todo correct 'initialize' error
     if (value.which() == REDIS_INT) {
-        w->writeChar(':');
+        w->writeChar(INT_CHAR);
         w->writeInt(boost::get<int64_t>(value));
         w->writeCrlf();
     } else if (value.which() == REDIS_STRING) {
-        w->writeChar('+');
+        w->writeChar(STRING_CHAR);
         w->writeString(boost::get<std::string>(value));
         w->writeCrlf();
     } else if (value.which() == REDIS_BULK_STRING) {
-        w->writeChar('$');
+        w->writeChar(BULK_STRING_CHAR);
         w->writeInt(boost::get<RedisBulkString>(value).container.size());
         w->writeCrlf();
-        w->writeString(boost::get<RedisBulkString>(value).container);
+        w->writeRaw(boost::get<RedisBulkString>(value).container.c_str(), boost::get<RedisBulkString>(value).container.size());
         w->writeCrlf();
     } else if (value.which() == REDIS_ERROR) {
-        w->writeChar('-');
+        w->writeChar(ERROR_CHAR);
         w->writeString(boost::get<RedisError>(value).msg);
         w->writeCrlf();
     } else if (value.which() == REDIS_ARRAY) {
-//        w->writeChar('*');
-//        w->writeInt(boost::get<std::vector<RedisValue>>(value).size());
-//        w->writeCrlf();
-//        for (int i = 0; i < boost::get<std::vector<RedisValue>>(value).size(); ++i) {
-//            WriteRedisValue(w, &boost::get<std::vector<RedisValue>>(value)[i]);
-//        }
+        w->writeChar(ARRAY_CHAR);
+        auto& vec = boost::get<std::vector<RedisValue>>(value);
+        w->writeInt(vec.size());
+        w->writeCrlf();
+        for (int i = 0; i < vec.size(); ++i) {
+            WriteRedisValue(w, vec[i]);
+        }
     } else if (value.which() == REDIS_NULL) {
-        w->writeChar('$');
-        w->writeChar('-');
-        w->writeChar('1');
+        w->writeChar(BULK_STRING_CHAR);
+        w->writeInt(-1);
         w->writeCrlf();
     } else {
         throw std::runtime_error("unsupported type");
@@ -39,19 +38,19 @@ void WriteRedisValue(Writer* w, const RedisValue& value) {
 
 void ReadRedisValue(Reader* r, RedisValue* value) {
     switch (r->readChar()) {
-        case ':': {
+        case INT_CHAR: {
             *value = r->readInt();
             break;
         }
-        case '+': {
+        case STRING_CHAR: {
             *value = r->readLine();
             break;
         }
-        case '-': {
+        case ERROR_CHAR: {
             *value = RedisError(r->readLine());
             break;
         }
-        case '$': {
+        case BULK_STRING_CHAR: {
             int64_t string_size = r->readInt();
             if (string_size < 0) {
                 *value = RedisNull();
@@ -60,7 +59,7 @@ void ReadRedisValue(Reader* r, RedisValue* value) {
             }
             break;
         }
-        case '*': {
+        case ARRAY_CHAR: {
             //todo Set recursion limit to 8 Mb
             int64_t array_size = r->readInt();
             *value = std::vector<RedisValue>();
