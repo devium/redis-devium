@@ -67,6 +67,28 @@ TEST(WriteRedisValue, BulkString) {
     writer.result.clear();
 }
 
+TEST(WriteRedisValue, Array) {
+    RedisValue integer = 10;
+    RedisValue string = "abcd";
+    RedisValue error = RedisError("error");
+
+    RedisValue array = std::vector<RedisValue>{integer, error, string};
+    StringWriter writer(1024);
+
+    WriteRedisValue(&writer, array);
+    writer.flush();
+    EXPECT_STREQ("*3\r\n:10\r\n-error\r\n+abcd\r\n", writer.result.c_str());
+    writer.result.clear();
+
+    RedisValue big_array = std::vector<RedisValue>{array, integer};
+
+    WriteRedisValue(&writer, big_array);
+    writer.flush();
+    EXPECT_STREQ("*2\r\n*3\r\n:10\r\n-error\r\n+abcd\r\n:10\r\n", writer.result.c_str());
+    writer.result.clear();
+}
+
+
 TEST(ReadRedisValue, Int) {
     RedisValue val;
     StringReader reader;
