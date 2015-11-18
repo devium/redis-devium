@@ -41,6 +41,14 @@ enum RedisType {
     REDIS_ARRAY
 };
 
+enum FirstChar {
+    INT_CHAR = ':',
+    STRING_CHAR = '+',
+    BULK_STRING_CHAR = '$',
+    ERROR_CHAR = '-',
+    ARRAY_CHAR = '*'
+};
+
 void WriteRedisValue(Writer* w, const RedisValue& value);
 
 void ReadRedisValue(Reader* r, RedisValue* value);
