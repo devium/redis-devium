@@ -1,5 +1,8 @@
 #pragma once
 
+#include <unistd.h>
+#include <string>
+
 class Socket {
 private:
 
@@ -7,8 +10,14 @@ private:
 
 public:
 
-    Socket();
+    Socket(int socketDescriptor);
+
+    ~Socket();
 
     int getSocketDescriptor();
+
+    std::string readData(size_t size);
+
+    void writeData(std::string data);
 
 };
