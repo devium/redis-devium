@@ -9,7 +9,7 @@ private:
 
 public:
 
-    Getter(redisHashTable* hashTable);
+    Getter(RedisHashTable * hashTable);
 
     std::string getName();
 
