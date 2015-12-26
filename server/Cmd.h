@@ -1,16 +1,45 @@
 #pragma once
 
-#include <iosfwd>
 #include <protocol/redis.h>
 #include "HashTable.h"
+#include "configs.h"
 
 class Cmd {
+protected:
+
+    cmd name_;
+
+    HashTable* redisHashTable_;
+
 public:
 
-    virtual ~Cmd() {};
+    Cmd(cmd name, HashTable * hashTable);
 
-    virtual std::string  getName() = 0;
-
-    virtual RedisValue exec(RedisValue args) = 0;
+    cmd getName();
 
 };
+
+
+class Setter : public Cmd {
+public:
+
+    Setter(HashTable * hashTable);
+
+    using Cmd::getName;
+
+    RedisValue exec(RedisValue& args);
+
+};
+
+
+class Getter : public Cmd {
+public:
+
+    Getter(HashTable * hashTable);
+
+    using Cmd::getName;
+
+    RedisValue exec(RedisValue& args);
+
+};
+
