@@ -6,6 +6,7 @@
 #include <boost/variant.hpp>
 #include "reader.h"
 #include "writer.h"
+#include "configs.h"
 
 struct RedisError {
 
@@ -31,15 +32,6 @@ typedef boost::make_recursive_variant<
         , RedisError
         , std::vector<boost::recursive_variant_>
 >::type RedisValue;
-
-enum RedisType {
-    REDIS_NULL,
-    REDIS_INT,
-    REDIS_STRING,
-    REDIS_BULK_STRING,
-    REDIS_ERROR,
-    REDIS_ARRAY
-};
 
 enum FirstChar {
     INT_CHAR = ':',

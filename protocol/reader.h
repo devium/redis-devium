@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include "configs.h"
 
 class Reader {
 public:
@@ -18,10 +19,6 @@ public:
     int64_t readInt();
 
 protected:
-
-    const size_t MAX_STRING_SIZE_ = 1024 * 1024;
-
-    const size_t MAX_STRING_LEN_ = 1 << 15;
 
     std::vector<char> buffer_;
 
