@@ -22,17 +22,16 @@ void Writer::writeChar(char c) {
 
 void Writer::writeString(const std::string &s) {
     bool prev_is_cr = false;
-    for (size_t i = 0; i < s.size(); ) {
-        while (
-                i < s.size()
-                && wpos_ != buffer_.size()
-                && !(prev_is_cr && '\n' == s[i])
-                ) {
-            buffer_[wpos_++] = s[i];
-            prev_is_cr = ('\r' == s[i++]);
-        }
-        checkBuffer();
+    size_t i = 0;
+    while (
+            i < s.size()
+            && wpos_ != buffer_.size()
+            && !(prev_is_cr && '\n' == s[i])
+            ) {
+        buffer_[wpos_++] = s[i];
+        prev_is_cr = ('\r' == s[i++]);
     }
+    checkBuffer();
 }
 
 
